@@ -1,12 +1,13 @@
 package example.hello_security.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import example.hello_security.repository.SysUserRepository;
+import example.hello_security.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
-public interface SysUserMapper extends BaseMapper<SysUserRepository> {
-    List<SysUserRepository> selectAll();
+public interface SysUserMapper extends BaseMapper<SysUser> {
+    List<SysUser> selectAll();
+    void updateLastLoginTime(String username);
 }

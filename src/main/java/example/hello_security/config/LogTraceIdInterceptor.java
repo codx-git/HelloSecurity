@@ -2,6 +2,7 @@ package example.hello_security.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.UUID;
 
+@Slf4j
 @Component
 public class LogTraceIdInterceptor implements HandlerInterceptor {
     private static final String TRACE_ID_HEADER = "trace-id";
@@ -22,11 +24,14 @@ public class LogTraceIdInterceptor implements HandlerInterceptor {
             traceId = UUID.randomUUID().toString();
         }
         MDC.put(MDC_TRACE_ID_KEY,traceId);
+        log.info("请求url:" + request.getRequestURI() + ";请求入参:" + request.getQueryString());
         return true;
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
+        response.addHeader("TRACE_ID_HEADER",MDC.get(MDC_TRACE_ID_KEY));
+        log.info("返回结果:" + response.getStatus() + response.getOutputStream().toString());
         // 请求完成后清除 MDC 中的 traceId
         MDC.remove(MDC_TRACE_ID_KEY);
     }
