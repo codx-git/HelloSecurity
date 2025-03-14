@@ -28,6 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
+            //log.info("running jwt start");
             String jwt = parseJwt(request);
             if(jwt != null && jwtUtils.validateToken(jwt)){
                 String username = jwtUtils.getUsernameFromToken(jwt);
@@ -40,6 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.error(SystemType.USER_AUTHENTICATE_FAILED.getValue() + e);
         }
         filterChain.doFilter(request, response);
+        //log.info("running jwt end");
     }
 
     private String parseJwt(HttpServletRequest request) {

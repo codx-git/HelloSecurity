@@ -11,7 +11,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.util.UUID;
 
 @Slf4j
-@Component
+@Deprecated
+//@Component
 public class LogTraceIdInterceptor implements HandlerInterceptor {
     private static final String TRACE_ID_HEADER = "trace-id";
     private static final String MDC_TRACE_ID_KEY = "traceId";

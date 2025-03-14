@@ -2,6 +2,7 @@ package example.hello_security.config;
 
 import example.hello_security.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +22,8 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     @Autowired
+    private LogTraceIdFilter logTraceIdFilter;
+    @Autowired
     private SysUserService userDetailsService;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -32,6 +35,7 @@ public class SecurityConfig {
                         //.requestMatchers("/test/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .addFilterBefore(logTraceIdFilter,UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .userDetailsService(userDetailsService)
                 .httpBasic(AbstractHttpConfigurer::disable);
@@ -46,4 +50,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
