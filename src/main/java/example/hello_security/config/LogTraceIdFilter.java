@@ -24,8 +24,8 @@ public class LogTraceIdFilter extends OncePerRequestFilter {
         if(traceId == null){
             traceId = UUID.randomUUID().toString();
         }
-        log.info("请求路径：" + request.getRequestURI() + "请求体：" + request.getReader());
         MDC.put(MDC_TRACE_ID_KEY,traceId);
+        //log.info("请求路径：" + request.getRequestURI() + "请求体：" + request.getReader());
         try{
             filterChain.doFilter(request,response);
         }finally {

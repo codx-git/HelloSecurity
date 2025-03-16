@@ -24,7 +24,12 @@ public class SysUser implements UserDetails {
     private Date lastModifyTime;
     private Date lastLoginTime;
     private Set<GrantedAuthority> authorities;
+    //用户是否过期
+    private boolean accountNonExpired;
+    //用户是否锁定
     private boolean accountNonLocked;
+    //用户密码是否过期
     private boolean credentialsNonExpired;
+    //用户是否启用
     private boolean enabled;
 }
