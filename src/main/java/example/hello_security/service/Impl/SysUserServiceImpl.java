@@ -2,6 +2,7 @@ package example.hello_security.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import example.hello_security.entity.SysUser;
+import example.hello_security.mapper.SysRoleMapper;
 import example.hello_security.mapper.SysUserMapper;
 import example.hello_security.request.AddUserRequest;
 import example.hello_security.service.SysUserService;
@@ -30,6 +31,8 @@ import java.util.stream.Collectors;
 public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysUserMapper sysUserMapper;
+    @Autowired
+    private SysRoleMapper sysRoleMapper;
 
     @Override
     public List<SysUser> selectAll() {
@@ -50,12 +53,11 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username",username);
-        SysUser user = sysUserMapper.selectOne(queryWrapper);
-//        List<GrantedAuthority> authorities = user.getAuthorities().stream()
-//                .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
-//                .collect(Collectors.toList());
+        SysUser user = sysUserMapper.selectByUsername(username);
+        user.setRoles(sysRoleMapper.selectByUsername(username));
+        List<GrantedAuthority> authorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getCode()))
+                .collect(Collectors.toList());
         if(user == null){
             throw new UsernameNotFoundException(username + SystemType.USER_NOT_FOUND.getValue());
         }

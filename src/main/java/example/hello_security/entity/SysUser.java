@@ -1,16 +1,19 @@
 package example.hello_security.entity;
 
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Data
 //@Repository
-@Alias("sys_user")
+@Table(name = "sys_user")
 public class SysUser implements UserDetails {
     private Integer id;
     private String username;
@@ -32,4 +35,6 @@ public class SysUser implements UserDetails {
     private boolean credentialsNonExpired;
     //用户是否启用
     private boolean enabled;
+    private List<SysRole> roles;
+
 }

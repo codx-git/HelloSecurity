@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="example.hello_security.mapper.SysRoleMapper">
+    <resultMap id="sys_role_request" type="SysRole">
+        <result property="id" column="id"/>
+        <result property="code" column="code"/>
+        <result property="roleName" column="role_name"/>
+    </resultMap>
+
+    <select id="selectByUsername" parameterType="string" resultMap="sys_role_request">
+        SELECT
+            u.id,
+            u.username,
+            a.role_id,
+            r.code,
+            b.request_method,
+            b.request_url
+        FROM
+            sys_user AS u
+            JOIN sys_user_role AS a ON u.id = a.user_id
+            JOIN sys_role AS r on a.role_id = r.id
+            JOIN sys_role_request AS b ON a.role_id = b.role_id
+        WHERE
+            username = #{username}
+    </select>
+</mapper>

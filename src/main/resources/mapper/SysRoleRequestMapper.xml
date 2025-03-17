@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="example.hello_security.mapper.SysRoleRequestMapper">
+    <resultMap id="sys_role_request" type="SysRoleRequest">
+        <result property="id" column="id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="code" column="code"/>
+        <result property="requestMethod" column="request_method"/>
+        <result property="requestUrl" column="request_url"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="sys_role_request">
+        select rr.*,r.code from sys_role as  r join sys_role_request as rr on r.id = rr.role_id
+    </select>
+
+</mapper>

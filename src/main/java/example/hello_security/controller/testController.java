@@ -1,6 +1,8 @@
 package example.hello_security.controller;
 
 import example.hello_security.entity.SysUser;
+import example.hello_security.mapper.SysRoleMapper;
+import example.hello_security.mapper.SysRoleRequestMapper;
 import example.hello_security.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +17,15 @@ import java.util.List;
 public class testController {
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    SysRoleRequestMapper sysRoleRequestMapper;
+    @Autowired
+    SysRoleMapper sysRoleMapper;
 
    @RequestMapping("list")
-    public List<SysUser> list(){
+    public void list(){
        log.info("sdfsdf");
-       return sysUserService.selectAll();
+       sysRoleRequestMapper.selectAll();
     }
     //@RequestMapping("getOne")
     public SysUser loadUserByPhone(@RequestParam String username){

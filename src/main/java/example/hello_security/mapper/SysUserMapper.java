@@ -8,6 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface SysUserMapper extends BaseMapper<SysUser> {
+    SysUser selectByUsername(String username);
     List<SysUser> selectAll();
     void updateLastLoginTime(String username);
 }
