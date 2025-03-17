@@ -6,6 +6,7 @@ import example.hello_security.request.AddUserRequest;
 import example.hello_security.service.AuthService;
 import example.hello_security.util.ConverterUtils;
 import example.hello_security.util.JwtUtils;
+import example.hello_security.util.UserType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -53,6 +54,10 @@ public class AuthServiceImpl implements AuthService {
         sysUser.setCreateTime(new Date());
         sysUser.setLastModifyTime(new Date());
         sysUser.setLastLoginTime(new Date());
+        sysUser.setAccountNonExpired(UserType.USER_ACCOUNT_NOT_EXPIRED.getKey());
+        sysUser.setAccountNonLocked(UserType.USER_ACCOUNT_NOT_LOCKED.getKey());
+        sysUser.setCredentialsNonExpired(UserType.USER_CREDENTIALS_NOT_EXPIRED.getKey());
+        sysUser.setEnabled(UserType.USER_IS_ENABLED.getKey());
         try {
             sysUserMapper.insert(sysUser);
         }catch (Exception e){

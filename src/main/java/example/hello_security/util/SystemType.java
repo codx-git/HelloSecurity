@@ -1,6 +1,7 @@
 package example.hello_security.util;
 
 public enum SystemType {
+    USER_ALREADY_EXISTS(1000100 , "用户已存在"),
     USER_NOT_FOUND(1000110 , "用户不存在"),
     USER_NOT_AUTHENTICATE(1000120 , "用户无权限"),
     TOKEN_FAILED(1000130,"TOKEN验证失败"),
