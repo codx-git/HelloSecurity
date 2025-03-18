@@ -18,7 +18,7 @@ public class DBSecurityMetadataSource implements FilterInvocationSecurityMetadat
     private SysRoleRequestMapper sysRoleRequestMapper;
     @PostConstruct
     public void loadPermissions(){
-//        rolePermissionMap = new HashMap<>();
+        //rolePermissionMap = new HashMap<>();
 //        List<SysRoleRequest> permissions = sysRoleRequestMapper.findAll();
 //        permissions.forEach(perm -> {
 //            String key = perm.getRequestMethod() + ":" + perm.getRequestUrl();

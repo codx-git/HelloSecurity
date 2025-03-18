@@ -1,4 +1,4 @@
-package example.hello_security.util;
+package example.hello_security.type;
 
 public enum SystemType {
     USER_ALREADY_EXISTS(1000100 , "用户已存在"),

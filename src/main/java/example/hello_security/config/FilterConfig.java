@@ -1,8 +1,9 @@
 package example.hello_security.config;
 
+import example.hello_security.filter.JwtAuthenticationFilter;
+import example.hello_security.filter.LogTraceIdFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 //@Configuration
 @Deprecated

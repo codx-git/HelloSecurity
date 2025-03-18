@@ -1,4 +1,4 @@
-package example.hello_security.config;
+package example.hello_security.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

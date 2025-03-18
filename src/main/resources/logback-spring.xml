@@ -14,7 +14,7 @@
 <!--        </layout>-->
     </appender>
     <!-- 设置 MyBatis-Plus 的日志级别 -->
-<!--    <logger name="example.hello_security.mapper" level="info"/>-->
+    <logger name="example.hello_security.mapper" level="info"/>
     <logger name="org.springframework.security" level="debug"/>
 
     <root level="info">

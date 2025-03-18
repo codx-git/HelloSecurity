@@ -8,5 +8,5 @@ import java.util.List;
 
 @Mapper
 public interface SysRoleMapper extends BaseMapper<SysRole> {
-    List<SysRole> selectByUsername(String username);
+    List<SysRole> roleByUsername(String username);
 }

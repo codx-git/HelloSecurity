@@ -1,4 +1,4 @@
-package example.hello_security.util;
+package example.hello_security.type;
 
 public enum UserType {
     USER_ACCOUNT_NOT_EXPIRED(true,"用户未过期"),

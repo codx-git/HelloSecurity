@@ -6,7 +6,7 @@ import example.hello_security.request.AddUserRequest;
 import example.hello_security.service.AuthService;
 import example.hello_security.util.ConverterUtils;
 import example.hello_security.util.JwtUtils;
-import example.hello_security.util.UserType;
+import example.hello_security.type.UserType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;

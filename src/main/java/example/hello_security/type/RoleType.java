@@ -1,4 +1,4 @@
-package example.hello_security.util;
+package example.hello_security.type;
 
 public class RoleType {
 

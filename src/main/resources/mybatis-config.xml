@@ -5,7 +5,9 @@
     <!-- mybatis一旦使用xml配置文件后，application配置文件就需要关闭，否则会有冲突-->
     <settings>
         <setting name="logImpl" value="example.hello_security.config.TraceIdStdOutImpl"/>
+<!--        <setting name="logImpl" value="example.hello_security.config.TraceIdSlf4jImpl"/>-->
 <!--        <setting name="logImpl" value="org.apache.ibatis.logging.stdout.StdOutImpl"/>-->
+<!--        <setting name="logImpl" value="org.apache.ibatis.logging.slf4j.Slf4jImpl"/>-->
     </settings>
 
     <!-- 可选：类型别名 -->

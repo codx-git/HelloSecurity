@@ -1,8 +1,8 @@
-package example.hello_security.config;
+package example.hello_security.filter;
 
 import example.hello_security.service.SysUserService;
 import example.hello_security.util.JwtUtils;
-import example.hello_security.util.SystemType;
+import example.hello_security.type.SystemType;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

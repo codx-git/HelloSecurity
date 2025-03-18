@@ -2,6 +2,7 @@ package example.hello_security.util;
 
 
 import example.hello_security.entity.SysUser;
+import example.hello_security.type.SystemType;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
