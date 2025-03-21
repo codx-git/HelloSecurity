@@ -5,6 +5,7 @@ import example.hello_security.entity.SysUser;
 import example.hello_security.type.SystemType;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -29,9 +30,15 @@ public class JwtUtils {
 //        this.jwtExpiration = 3600000L; // 1 小时
 //        this.hmacKey = new SecretKeySpec(jwtSecret.getBytes(), SignatureAlgorithm.HS256.getJcaName());
 //    }
+    @PostConstruct
+    //使用 @PostConstruct 注解在属性注入完成后初始化 hmacKey
+    private void initHmacKey(){
+       hmacKey = new SecretKeySpec(jwtSecret.getBytes(), SignatureAlgorithm.HS256.getJcaName());
+    }
+
     //生成 Token
     public String generateToken(SysUser sysUser){
-        hmacKey = new SecretKeySpec(jwtSecret.getBytes(), SignatureAlgorithm.HS256.getJcaName());
+        //hmacKey = new SecretKeySpec(jwtSecret.getBytes(), SignatureAlgorithm.HS256.getJcaName());
         return Jwts.builder()
                 .setSubject(sysUser.getUsername())
                 .setIssuedAt(new Date())

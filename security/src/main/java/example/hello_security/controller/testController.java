@@ -27,12 +27,13 @@ public class testController {
     SysRoleMapper sysRoleMapper;
 
    @RequestMapping("list")
-    public void list(){
+    public String list(){
        log.info("sdfsdf");
        //ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor();
        ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
        log.info("当前线程数量：" + String.valueOf(threadMXBean.getThreadCount()));
        sysRoleRequestMapper.selectAll();
+       return "success";
     }
     //@RequestMapping("getOne")
     public SysUser loadUserByPhone(@RequestParam String username){
