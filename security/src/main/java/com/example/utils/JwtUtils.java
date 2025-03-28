@@ -1,4 +1,4 @@
-package com.example.util;
+package com.example.utils;
 
 
 import com.example.type.SystemType;

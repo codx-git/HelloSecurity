@@ -1,6 +1,8 @@
 package com.example.service.Impl;
 
 import com.example.entity.ScheduleJob;
+import com.example.job.QuartzJobFactory;
+import com.example.job.QuartzJobFactoryDisallowConcurrentExecution;
 import com.example.mapper.ScheduleJobMapper;
 import com.example.service.ScheduleJobService;
 import lombok.extern.slf4j.Slf4j;
@@ -69,8 +71,8 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
 
         // 不存在，创建一个
         if (null == trigger) {
-            //Class clazz = job.getIsConcurrent() ? QuartzJobFactory.class : QuartzJobFactoryDisallowConcurrentExecution.class;
-            Class clazz = Class.forName(job.getMethodName());
+            Class clazz = job.getIsConcurrent() ? QuartzJobFactory.class : QuartzJobFactoryDisallowConcurrentExecution.class;
+            //Class clazz = Class.forName(job.getMethodName());
 
             JobDetail jobDetail = JobBuilder.newJob(clazz).withIdentity(job.getJobName(), job.getJobGroup()).build();
 
@@ -102,5 +104,54 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
     public void deleteJob(ScheduleJob scheduleJob) throws SchedulerException {
         JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getJobGroup());
         scheduler.deleteJob(jobKey);
+    }
+    /**
+     * 暂停一个job
+     *
+     * @param scheduleJob
+     * @throws SchedulerException
+     */
+    public void pauseJob(ScheduleJob scheduleJob) throws SchedulerException {
+        JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getJobGroup());
+        scheduler.pauseJob(jobKey);
+    }
+
+    /**
+     * 恢复一个job
+     *
+     * @param scheduleJob
+     * @throws SchedulerException
+     */
+    public void resumeJob(ScheduleJob scheduleJob) throws SchedulerException {
+        JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getJobGroup());
+        scheduler.resumeJob(jobKey);
+    }
+    /**
+     * 立即执行job
+     *
+     * @param scheduleJob
+     * @throws SchedulerException
+     */
+    public void runAJobNow(ScheduleJob scheduleJob) throws SchedulerException {
+        JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getJobGroup());
+        scheduler.triggerJob(jobKey);
+    }
+
+    /**
+     * 更新job时间表达式
+     *
+     * @param scheduleJob
+     * @throws SchedulerException
+     */
+    public void updateJobCron(ScheduleJob scheduleJob) throws SchedulerException {;
+        TriggerKey triggerKey = TriggerKey.triggerKey(scheduleJob.getJobName(), scheduleJob.getJobGroup());
+
+        CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
+
+        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCronExpression());
+
+        trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
+
+        scheduler.rescheduleJob(triggerKey, trigger);
     }
 }

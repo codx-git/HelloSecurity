@@ -43,7 +43,7 @@ public class ScheduleJob implements Serializable {
     /**
      * spring bean
      */
-    private String springId;
+    //private String springId;
     /**
      * 任务调用的方法名
      */
