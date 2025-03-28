@@ -32,4 +32,12 @@
         where username = #{username}
     </update>
 
+    <select id="test" parameterType="java.util.Map" resultMap="sys_user">
+        select * from  sys_user
+        where
+        <!-- <if test="enabled != null and enabled != ''"> 采用下面方法可避免int判空问题 -->
+        <if test="enabled != null and enabled != '' or enabled == 0 " >
+            enabled = #{enabled}
+        </if>
+    </select>
 </mapper>

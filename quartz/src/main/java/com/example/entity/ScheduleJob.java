@@ -1,11 +1,13 @@
 package com.example.entity;
 
+import jakarta.persistence.Table;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
+@Table(name ="schedule_job")
 public class ScheduleJob implements Serializable {
     //@Id
     private Long Id;
@@ -43,7 +45,7 @@ public class ScheduleJob implements Serializable {
     /**
      * spring bean
      */
-    private String springId;
+    //private String springId;
     /**
      * 任务调用的方法名
      */

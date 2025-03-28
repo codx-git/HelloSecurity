@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.mapper.SysRoleRequestMapper;
+import com.example.mapper.SysUserMapper;
 import com.example.service.SysUserService;
 import com.example.entity.SysUser;
 import com.example.mapper.SysRoleMapper;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -24,8 +26,9 @@ public class testController {
     SysRoleRequestMapper sysRoleRequestMapper;
     @Autowired
     SysRoleMapper sysRoleMapper;
-
-   @GetMapping("list")
+    @Autowired
+    SysUserMapper sysUserMapper;
+   @GetMapping("/list")
    @Operation(summary = "基础list测试类", description = "基础list测试类")
     public String list(){
        log.info("sdfsdf");
@@ -39,5 +42,12 @@ public class testController {
     public SysUser loadUserByPhone(@RequestParam String username){
        //sysUserService.loadUserByUsername(phone);
         return (SysUser)sysUserService.loadUserByUsername(username);
+    }
+
+    @PostMapping("/mybatis")
+    //在使用 MyBatis 时，如果 Integer 类型的值为 0，可能会导致动态 SQL 不生效。这是因为 MyBatis 在处理 if 标签时，会将 Integer 类型的 0 值视为空字符串。
+    public String mybaitsTest(@RequestParam Map<Object,Object> param){
+        sysUserMapper.test(param);
+       return "success";
     }
 }

@@ -12,6 +12,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+//通过注解的形式开启authentic
+//@SecurityScheme(
+//        name = "JWT-test",                   // 认证方案名称
+//        type = SecuritySchemeType.HTTP,      // 认证类型，当前为http认证
+//        description = "这是一个认证的描述详细",  // 描述信息
+//        in = SecuritySchemeIn.HEADER,        // 代表在http请求头部
+//        scheme = "bearer",                   // 认证方案，如：Authorization: bearer token信息
+//        bearerFormat = "JWT")                // 表示使用 JWT 格式作为 Bearer Token 的格式
 public class SwaggerOpenApiConfig{
     /***
      * 构建Swagger3.0文档说明
@@ -43,6 +51,7 @@ public class SwaggerOpenApiConfig{
                 .termsOfService("https://example.com/")            // Api接口的服务条款地址
                 .license(license)                                  // 设置联系人信息
                 .contact(contact);                                 // 授权许可信息
+
         SecurityScheme securityScheme = new SecurityScheme()
                 .name("JWT-test")                                 // 认证方案名称
                 .type(SecurityScheme.Type.HTTP)                   // 认证类型，当前为http认证

@@ -1,8 +1,35 @@
 package com.example.service;
 
 
+import com.example.entity.ScheduleJob;
 import org.quartz.SchedulerException;
 
+import java.util.List;
+
 public interface ScheduleJobService {
-    public void changeStatus(Long jobId, Boolean status) throws SchedulerException, ClassNotFoundException;
+    //获取数据库内任务清单
+    public List<ScheduleJob> getAllTask();
+    //添加定时任务到数据库中
+    public void addTask(ScheduleJob job);
+    //从数据库中删除，并终止任务
+    public void deleteTask(Long jobId) throws SchedulerException;
+
+    //获取定时任务信息
+    public ScheduleJob getTaskById(Long jobId);
+
+    //更改任务状态
+    public void changeStatus(Long jobId) throws SchedulerException;
+
+    //暂停一个任务
+    public void pauseJob(ScheduleJob scheduleJob) throws SchedulerException;
+
+    //恢复一个任务
+    public void resumeJob(ScheduleJob scheduleJob) throws SchedulerException;
+
+    //立刻执行一个任务
+    public void runAJobNow(ScheduleJob scheduleJob) throws SchedulerException;
+
+    //更新任务定时时间
+    public void updateJobCron(ScheduleJob scheduleJob) throws SchedulerException;
+
 }

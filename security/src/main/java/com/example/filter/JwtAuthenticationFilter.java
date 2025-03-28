@@ -2,7 +2,7 @@ package com.example.filter;
 
 import com.example.service.SysUserService;
 import com.example.type.SystemType;
-import com.example.util.JwtUtils;
+import com.example.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
