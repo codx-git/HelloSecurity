@@ -11,14 +11,22 @@
 
 	<packaging>jar</packaging>
 	<artifactId>security</artifactId>
+
 	<properties>
 		<java.version>17</java.version>
 	</properties>
+
 	<dependencies>
 <!--		<dependency>-->
 <!--			<groupId>org.springframework.boot</groupId>-->
 <!--			<artifactId>spring-boot-starter-web</artifactId>-->
 <!--		</dependency>-->
+		<dependency>
+			<groupId>example</groupId>
+			<artifactId>quartz</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>

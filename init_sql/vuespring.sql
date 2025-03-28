@@ -98,4 +98,29 @@ CREATE TABLE `sys_user_role`  (
 -- Records of sys_user_role
 -- ----------------------------
 
+-- ----------------------------
+-- Table structure for schedule_job
+-- ----------------------------
+
+DROP TABLE IF EXISTS `schedule_job`;
+CREATE TABLE `schedule_job` (
+                                `job_id` int(36) NOT NULL,
+                                `job_name` varchar(255) DEFAULT NULL COMMENT '任务名称',
+                                `job_group` varchar(255) DEFAULT NULL COMMENT '任务分组',
+                                `job_status` tinyint(1) DEFAULT NULL COMMENT '任务状态 是否启动任务',
+                                `cron_expression` varchar(255) DEFAULT NULL COMMENT 'cron表达式',
+                                `description` varchar(255) DEFAULT NULL COMMENT '描述',
+                                `bean_class` varchar(255) DEFAULT NULL COMMENT '任务执行时调用哪个类的方法 包名+类名',
+                                `is_concurrent` tinyint(1) DEFAULT NULL COMMENT '任务是否有状态',
+                                `spring_id` varchar(255) DEFAULT NULL COMMENT 'spring bean',
+                                `method_name` varchar(255) DEFAULT NULL COMMENT '任务调用的方法名',
+                                `create_time` datetime DEFAULT NULL,
+                                `last_modify_time` datetime DEFAULT NULL,
+                                PRIMARY KEY (`job_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+-- ----------------------------
+-- Records of sys_user_role
+-- ----------------------------
+
 SET FOREIGN_KEY_CHECKS = 1;
