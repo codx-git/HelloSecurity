@@ -17,41 +17,55 @@ public class JobController {
     @Autowired
     private ScheduleJobService scheduleJobService;
     @GetMapping("/getAllTask")
-    @Operation(summary = "",description = "查询所有任务清单")
+    @Operation(summary = "查询所有任务清单",description = "查询所有任务清单")
     public List<ScheduleJob> getAllTask(){
         return scheduleJobService.getAllTask();
     }
+
+    @GetMapping("/getRunningJob")
+    @Operation(summary = "获取正在执行的任务",description = "获取正在执行的任务")
+    public List<ScheduleJob> getRunningJob() throws SchedulerException {
+        return scheduleJobService.getRunningJob();
+    }
+
     @PostMapping("/addTask")
-    @Operation(summary = "",description = "添加定时任务")
+    @Operation(summary = "添加定时任务",description = "添加定时任务")
     public String addTask(@RequestBody ScheduleJob job){
         scheduleJobService.addTask(job);
         return "success";
     }
 
     @PostMapping("/updateTaskStatus")
-    @Operation(summary = "",description = "更改任务状态")
-    public String updateTaskStatus(@RequestBody Long jobId) throws SchedulerException{
+    @Operation(summary = "更改任务状态",description = "更改任务状态")
+    public String updateTaskStatus(@RequestParam Long jobId) throws SchedulerException{
         scheduleJobService.changeStatus(jobId);
         return "success";
     }
     @PostMapping("/deleteTask")
-    @Operation(summary = "",description = "更改任务状态")
-    public String deleteTask(@RequestBody Long jobId) throws SchedulerException{
+    @Operation(summary = "删除一个任务",description = "删除一个任务")
+    public String deleteTask(@RequestParam Long jobId) throws SchedulerException{
         scheduleJobService.deleteTask(jobId);
         return "success";
     }
 
     @PostMapping("/pauseJob")
-    @Operation(summary = "",description = "暂停执行中的任务")
-    public String pauseJob(@RequestBody ScheduleJob job) throws SchedulerException {
-        scheduleJobService.pauseJob(job);
+    @Operation(summary = "暂停执行中的任务",description = "暂停执行中的任务")
+    public String pauseJob(@RequestParam Long jobId) throws SchedulerException {
+        scheduleJobService.pauseJob(jobId);
         return "success";
     }
 
     @PostMapping("/resumeJob")
-    @Operation(summary = "",description = "恢复暂停的任务")
-    public String resumeJob(@RequestBody ScheduleJob job) throws SchedulerException {
-        scheduleJobService.resumeJob(job);
+    @Operation(summary = "恢复暂停的任务",description = "恢复暂停的任务")
+    public String resumeJob(@RequestParam Long jobId) throws SchedulerException {
+        scheduleJobService.resumeJob(jobId);
+        return "success";
+    }
+
+    @PostMapping("/runAJobNow")
+    @Operation(summary = "立刻执行一个任务并且只执行一次",description = "立刻执行一个任务并且只执行一次")
+    public String runAJobNow(@RequestParam Long jobId) throws SchedulerException {
+        scheduleJobService.runAJobNow(jobId);
         return "success";
     }
     @PostMapping("/test")

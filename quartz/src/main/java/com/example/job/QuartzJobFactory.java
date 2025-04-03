@@ -15,6 +15,8 @@ import org.quartz.JobExecutionException;
 public class QuartzJobFactory implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        //JobDataMap会从数据库表QRTZ_JOB_DETAILS的job_data获取数据
+        //blob是一种用于存储二进制大对象的数据类型。它适合存储像图片、音频、视频、文档等二进制数据
         ScheduleJob scheduleJob = (ScheduleJob) jobExecutionContext.getMergedJobDataMap().get("scheduleJob");
         JobUtils.invokeMethod(scheduleJob,jobExecutionContext);
     }

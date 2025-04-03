@@ -57,8 +57,6 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
 
     /**
      * 更改任务状态
-     *
-     * @throws SchedulerException
      */
     public void changeStatus(Long jobId) throws SchedulerException {
         ScheduleJob job = getTaskById(jobId);
@@ -78,8 +76,6 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
 
     /**
      * 添加任务
-     *
-     * @throws SchedulerException
      */
     public void addJob(ScheduleJob job) throws SchedulerException {
         if (job == null || !job.getJobStatus()) {
@@ -95,13 +91,13 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
             //Class clazz = Class.forName(job.getMethodName());
 
             JobDetail jobDetail = JobBuilder.newJob(clazz).withIdentity(job.getJobName(), job.getJobGroup()).build();
-
+            //存入数据库表QRTZ_JOB_DETAILS的job_data字段内scheduleJob
             jobDetail.getJobDataMap().put("scheduleJob", job);
 
             CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());
 
             trigger = TriggerBuilder.newTrigger().withIdentity(job.getJobName(), job.getJobGroup()).withSchedule(scheduleBuilder).build();
-
+            //此方法的主要功能是将一个作业（JobDetail）和一个触发器（Trigger）关联起来，并将其注册到调度器（Scheduler）中
             scheduler.scheduleJob(jobDetail, trigger);
         } else {
             // Trigger已存在，那么更新相应的定时设置
@@ -117,9 +113,6 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
 
     /**
      * 删除一个job
-     *
-     * @param scheduleJob
-     * @throws SchedulerException
      */
     public void deleteJob(ScheduleJob scheduleJob) throws SchedulerException {
         JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getJobGroup());
@@ -128,42 +121,43 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
 
     /**
      * 暂停一个job
-     *
-     * @param scheduleJob
-     * @throws SchedulerException
      */
-    public void pauseJob(ScheduleJob scheduleJob) throws SchedulerException {
-        JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getJobGroup());
+    public void pauseJob(Long jobId) throws SchedulerException {
+        ScheduleJob job = getTaskById(jobId);
+        if (job == null) {
+            return;
+        }
+        JobKey jobKey = JobKey.jobKey(job.getJobName(), job.getJobGroup());
         scheduler.pauseJob(jobKey);
     }
 
     /**
      * 恢复一个job
-     *
-     * @param scheduleJob
-     * @throws SchedulerException
      */
-    public void resumeJob(ScheduleJob scheduleJob) throws SchedulerException {
-        JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getJobGroup());
+    public void resumeJob(Long jobId) throws SchedulerException {
+        ScheduleJob job = getTaskById(jobId);
+        if (job == null) {
+            return;
+        }
+        JobKey jobKey = JobKey.jobKey(job.getJobName(), job.getJobGroup());
         scheduler.resumeJob(jobKey);
     }
 
     /**
-     * 立即执行job
-     *
-     * @param scheduleJob
-     * @throws SchedulerException
+     * 立即执行job,并且只执行一次
      */
-    public void runAJobNow(ScheduleJob scheduleJob) throws SchedulerException {
-        JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getJobGroup());
+    public void runAJobNow(Long jobId) throws SchedulerException {
+        ScheduleJob job = getTaskById(jobId);
+        if (job == null) {
+            return;
+        }
+        JobKey jobKey = JobKey.jobKey(job.getJobName(), job.getJobGroup());
+        //该方法的作用是立即触发一个已经存在于 !调度器(scheduler)中! 的作业
         scheduler.triggerJob(jobKey);
     }
 
     /**
      * 更新job时间表达式
-     *
-     * @param scheduleJob
-     * @throws SchedulerException
      */
     @Deprecated
     public void updateJobCron(ScheduleJob scheduleJob) throws SchedulerException {
@@ -181,9 +175,6 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
 
     /**
      * 所有正在运行的job
-     *
-     * @return
-     * @throws SchedulerException
      */
     public List<ScheduleJob> getRunningJob() throws SchedulerException {
         List<JobExecutionContext> executingJobs = scheduler.getCurrentlyExecutingJobs();
@@ -195,8 +186,8 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
             Trigger trigger = executingJob.getTrigger();
             job.setJobName(jobKey.getName());
             job.setJobGroup(jobKey.getGroup());
-            job.setDescription("触发器:" + trigger.getKey());
             Trigger.TriggerState triggerState = scheduler.getTriggerState(trigger.getKey());
+            job.setDescription("触发器:" + trigger.getKey() + ";状态:" + triggerState.name());
             //job.setJobStatus(triggerState.name());
             if (trigger instanceof CronTrigger) {
                 CronTrigger cronTrigger = (CronTrigger) trigger;

@@ -124,5 +124,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- ----------------------------
 -- Records of schedule_job
 -- ----------------------------
+INSERT INTO `schedule_job` VALUES (0, 'per10s', 'test', 1, '0/10 * * * * ? ', 'string', 'com.example.test.JobTest', 1, NULL, 'run', '2025-04-03 11:11:11', '2025-04-03 11:11:44');
+INSERT INTO `schedule_job` VALUES (1, 'per20s', 'test', 1, '0/20 * * * * ? ', 'string', 'com.example.test.JobTest', 1, NULL, 'stop', '2025-04-03 15:36:54', '2025-04-03 15:37:33');
 
 SET FOREIGN_KEY_CHECKS = 1;
