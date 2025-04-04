@@ -1,18 +1,22 @@
 package com.example.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.entity.ScheduleJob;
 import com.example.job.QuartzJobFactory;
 import com.example.job.QuartzJobFactoryDisallowConcurrentExecution;
 import com.example.mapper.ScheduleJobMapper;
 import com.example.service.ScheduleJobService;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Wrapper;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.locks.Condition;
 
 @Slf4j
 @Service
@@ -21,6 +25,25 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
     private ScheduleJobMapper scheduleJobMapper;
     @Autowired
     private Scheduler scheduler;
+
+    /**
+     * 项目启动后加载定时任务
+     * @PostConstruct 是 Java EE 中定义的注解，Spring 也使用该注解来表示某个方法应该在 Bean 初始化后执行一次。该注解可以标注在一个没有参数的
+     */
+    @PostConstruct
+    private void init() throws SchedulerException {
+        List<ScheduleJob> scheduleJobs = scheduleJobMapper.selectAll();
+        if(scheduleJobs == null || scheduleJobs.size() == 0){
+            log.info("项目启动后无可执行的定时任务");
+        }
+        for(ScheduleJob job:scheduleJobs){
+            if(job.getJobStatus()){
+                addJob(job);
+            }else {
+                deleteJob(job);
+            }
+        }
+    }
 
     /**
      * 从数据库中查询job

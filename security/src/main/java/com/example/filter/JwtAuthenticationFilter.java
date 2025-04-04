@@ -1,5 +1,7 @@
 package com.example.filter;
 
+import com.example.entity.SysUserOperateLog;
+import com.example.mapper.SysUserOperateLogMapper;
 import com.example.service.SysUserService;
 import com.example.type.SystemType;
 import com.example.utils.JwtUtils;
@@ -24,18 +26,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private SysUserService sysUserService;
     @Autowired
+    SysUserOperateLogMapper sysUserOperateLogMapper;
+    @Autowired
     private JwtUtils jwtUtils;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             //log.info("running jwt start");
+            long costStart = System.currentTimeMillis();
             String jwt = parseJwt(request);
             if(jwt != null && jwtUtils.validateToken(jwt)){
+                //jwt验证
                 String username = jwtUtils.getUsernameFromToken(jwt);
                 UserDetails userDetails = sysUserService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+                //用户认证后记录对应请求记录
+                SysUserOperateLog sysUserOperateLog = new SysUserOperateLog();
+                sysUserOperateLog.setUsername(username);
+                sysUserOperateLog.setIp(request.getRemoteAddr());
+                sysUserOperateLog.setRequestUrl(request.getRequestURI());
+                sysUserOperateLog.setRequestMethod(request.getMethod());
+                sysUserOperateLog.setCostTime(System.currentTimeMillis() - costStart);
+                sysUserOperateLogMapper.insert(sysUserOperateLog);
             }
         }catch (Exception e){
             log.error(SystemType.USER_AUTHENTICATE_FAILED.getValue() + e);

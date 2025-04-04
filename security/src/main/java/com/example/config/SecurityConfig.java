@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.DisableEncodeUrlFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -27,7 +28,7 @@ public class SecurityConfig {
     @Autowired
     private SysUserService userDetailsService;
     @Autowired
-    DBSecurityMetadataSource securityMetadataSource;
+    SysAuthorizationManager sysAuthorizationManager;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -39,7 +40,7 @@ public class SecurityConfig {
                                 "/auth/**","/error","/test/**",
                                 "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**"
                         ).permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().access(sysAuthorizationManager)
 //                        .withObjectPostProcessor(
 //                                new ObjectPostProcessor<FilterSecurityInterceptor>() {
 //                                    @Override
@@ -51,7 +52,7 @@ public class SecurityConfig {
 //                                }
 //                        )
                 )
-                .addFilterBefore(logTraceIdFilter,UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(logTraceIdFilter, DisableEncodeUrlFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .userDetailsService(userDetailsService)
                 .httpBasic(AbstractHttpConfigurer::disable);

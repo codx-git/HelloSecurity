@@ -3,12 +3,12 @@
 <configuration>
     <!-- mybatis的配置文件需要严格按顺序写属性 -->
     <!-- mybatis一旦使用xml配置文件后，application配置文件就需要关闭，否则会有冲突-->
-    <settings>
-        <setting name="logImpl" value="com.example.config.TraceIdStdOutImpl"/>
-<!--        <setting name="logImpl" value="config.com.example.TraceIdSlf4jImpl"/>-->
-<!--        <setting name="logImpl" value="org.apache.ibatis.logging.stdout.StdOutImpl"/>-->
-<!--        <setting name="logImpl" value="org.apache.ibatis.logging.slf4j.Slf4jImpl"/>-->
-    </settings>
+<!--    <settings>-->
+<!--        <setting name="logImpl" value="com.example.config.TraceIdStdOutImpl" />-->
+<!--&lt;!&ndash;        <setting name="logImpl" value="com.example.config.TraceIdSlf4jImpl"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <setting name="logImpl" value="org.apache.ibatis.logging.stdout.StdOutImpl"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <setting name="logImpl" value="org.apache.ibatis.logging.slf4j.Slf4jImpl"/>&ndash;&gt;-->
+<!--    </settings>-->
 
     <!-- 可选：类型别名 -->
     <typeAliases>

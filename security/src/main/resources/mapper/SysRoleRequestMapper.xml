@@ -13,20 +13,24 @@
         select rr.*,r.code from sys_role as  r join sys_role_request as rr on r.id = rr.role_id
     </select>
 
-    <select id="permissionByUsername" parameterType="string">
-        SELECT
-            u.id,
-            u.username,
-            a.role_id,
-            r.code,
-            b.request_method,
-            b.request_url
-        FROM
-            sys_user AS u
-                JOIN sys_user_role AS a ON u.id = a.user_id
-                JOIN sys_role AS r on a.role_id = r.id
-                JOIN sys_role_request AS b ON a.role_id = b.role_id
-        WHERE
-            username = #{username}
+    <select id="permissionByUsernameAndUrl" parameterType="string" resultType="boolean">
+        SELECT EXISTS(
+            SELECT
+                su.id,
+                su.username,
+                sur.role_id,
+                sr.code,
+                srr.request_method,
+                srr.request_url
+            FROM
+                sys_user AS su
+                    JOIN sys_user_role AS sur ON su.id = sur.user_id
+                    JOIN sys_role AS sr on sur.role_id = sr.id
+                    JOIN sys_role_request AS srr ON sur.role_id = srr.role_id
+            WHERE
+                username = #{username}
+              and srr.request_url = #{url}
+              and srr.request_method =#{method}
+        )
     </select>
 </mapper>

@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -30,6 +29,8 @@ public class LogTraceIdFilter extends OncePerRequestFilter {
             filterChain.doFilter(request,response);
         }finally {
             //log.info("running log end");
+            //返回的结果带上trace_id
+            response.setHeader(TRACE_ID_HEADER,traceId);
             MDC.remove(MDC_TRACE_ID_KEY);
         }
     }

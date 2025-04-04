@@ -9,4 +9,7 @@ import java.util.List;
 @Mapper
 public interface SysRoleRequestMapper extends BaseMapper<SysRoleRequest> {
     List<SysRoleRequest> selectAll();
+
+    Boolean permissionByUsernameAndUrl(String username,String url,String method);
+
 }

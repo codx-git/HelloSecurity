@@ -2,7 +2,7 @@ package com.example.config;
 
 import org.apache.ibatis.logging.stdout.StdOutImpl;
 import org.slf4j.MDC;
-
+@Deprecated
 public class TraceIdStdOutImpl extends StdOutImpl {
     private static final String MDC_TRACE_ID_KEY = "traceId";
     public TraceIdStdOutImpl(String clazz) {
