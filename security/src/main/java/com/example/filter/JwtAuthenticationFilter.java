@@ -20,6 +20,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Date;
+
 @Slf4j
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -50,6 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 sysUserOperateLog.setRequestUrl(request.getRequestURI());
                 sysUserOperateLog.setRequestMethod(request.getMethod());
                 sysUserOperateLog.setCostTime(System.currentTimeMillis() - costStart);
+                sysUserOperateLog.setCreateTime(new Date());
                 sysUserOperateLogMapper.insert(sysUserOperateLog);
             }
         }catch (Exception e){

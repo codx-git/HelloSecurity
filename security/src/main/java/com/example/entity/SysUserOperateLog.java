@@ -2,6 +2,8 @@ package com.example.entity;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class SysUserOperateLog {
     private Integer id;
@@ -11,4 +13,5 @@ public class SysUserOperateLog {
     private String requestUrl;
     private Long costTime;
     private String requestMethod;
+    private Date createTime;
 }
