@@ -1,10 +1,11 @@
-package com.example.config;
-import  org.apache.ibatis.logging.slf4j.Slf4jImpl;
+package com.example.config.deprecated;
+
+import org.apache.ibatis.logging.stdout.StdOutImpl;
 import org.slf4j.MDC;
 @Deprecated
-public class TraceIdSlf4jImpl extends Slf4jImpl{
+public class TraceIdStdOutImpl extends StdOutImpl {
     private static final String MDC_TRACE_ID_KEY = "traceId";
-    public TraceIdSlf4jImpl(String clazz) {
+    public TraceIdStdOutImpl(String clazz) {
         super(clazz);
     }
     @Override

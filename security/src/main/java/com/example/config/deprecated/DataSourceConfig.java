@@ -1,4 +1,4 @@
-package com.example.config;
+package com.example.config.deprecated;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;

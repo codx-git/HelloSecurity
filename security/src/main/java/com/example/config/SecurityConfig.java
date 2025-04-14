@@ -27,8 +27,6 @@ public class SecurityConfig {
     private LogTraceIdFilter logTraceIdFilter;
     @Autowired
     private SysUserService userDetailsService;
-    @Autowired
-    SysAuthorizationManager sysAuthorizationManager;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -40,7 +38,8 @@ public class SecurityConfig {
                                 "/auth/**","/error","/test/**",
                                 "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**"
                         ).permitAll()
-                        .anyRequest().access(sysAuthorizationManager)
+//                        .anyRequest().access(sysAuthorizationManager)
+                        .anyRequest().authenticated()
 //                        .withObjectPostProcessor(
 //                                new ObjectPostProcessor<FilterSecurityInterceptor>() {
 //                                    @Override

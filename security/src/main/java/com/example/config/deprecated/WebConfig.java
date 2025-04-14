@@ -1,4 +1,4 @@
-package com.example.config;
+package com.example.config.deprecated;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

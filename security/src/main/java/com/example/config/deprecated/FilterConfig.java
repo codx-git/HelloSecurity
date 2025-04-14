@@ -1,4 +1,4 @@
-package com.example.config;
+package com.example.config.deprecated;
 
 import com.example.filter.JwtAuthenticationFilter;
 import com.example.filter.LogTraceIdFilter;
