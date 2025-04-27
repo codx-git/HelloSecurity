@@ -4,6 +4,8 @@ import com.example.service.ZookeeperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/zk")
 public class ZookeeperController {
@@ -20,10 +22,12 @@ public class ZookeeperController {
     public String getNode(@RequestParam String path) throws Exception {
         return zookeeperService.getNodeData(path);
     }
-
+    @DeleteMapping("/delete")
+    public void deleteNode(@RequestParam String path) throws Exception {
+        zookeeperService.deleteNode(path);
+    }
     @PostMapping("/watch")
-    public String watch(@RequestParam String path) throws Exception {
-        zookeeperService.watchNode(path);
-        return "success";
+    public List<String> watch(@RequestParam String path) throws Exception {
+        return zookeeperService.watchNode(path);
     }
 }

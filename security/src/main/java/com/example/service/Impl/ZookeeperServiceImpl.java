@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -29,15 +31,21 @@ public class ZookeeperServiceImpl implements ZookeeperService {
         byte[] data = curatorFramework.getData().forPath(path);
         return new String(data, StandardCharsets.UTF_8);
     }
-
     @Override
-    public void watchNode(String path) throws Exception {
+    public void deleteNode(String path) throws Exception {
+        if (curatorFramework.checkExists().forPath(path) != null) {
+            curatorFramework.delete().forPath(path);
+        }
+    }
+    @Override
+    public List<String> watchNode(String path) throws Exception {
         CuratorCache cache = CuratorCache.build(curatorFramework,path);
+        List<String> list = new ArrayList<>();
         CuratorCacheListener listener = CuratorCacheListener.builder()
-                .forCreates(node -> log.info(String.format("Node created: [%s]", node)))
-                .forChanges((oldNode, node) -> log.info(String.format("Node changed. Old: [%s] New: [%s]", oldNode, node)))
-                .forDeletes(oldNode -> log.info(String.format("Node deleted. Old value: [%s]", oldNode)))
-                .forInitialized(() -> log.info("Cache initialized"))
+                .forCreates(node -> list.add(String.format("Node created: [%s]", node)))
+                .forChanges((oldNode, node) -> list.add(String.format("Node changed. Old: [%s] New: [%s]", oldNode, node)))
+                .forDeletes(oldNode -> list.add(String.format("Node deleted. Old value: [%s]", oldNode)))
+                .forInitialized(() -> list.add("Cache initialized"))
                 .build();
 
         // register the listener
@@ -45,6 +53,7 @@ public class ZookeeperServiceImpl implements ZookeeperService {
 
         // the cache must be started
         cache.start();
+        return list;
 //        TreeCache treeCache = new TreeCache(curatorFramework, path);
 //        treeCache.start();
 //        treeCache.getListenable().addListener((client, event) -> {

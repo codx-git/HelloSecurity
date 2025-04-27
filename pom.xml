@@ -52,7 +52,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.49</version>
+			<version>5.1.47</version>
 		</dependency>
 		<!-- Spring Data JPA -->
 		<dependency>
@@ -89,6 +89,7 @@
 	<modules>
 		<module>security</module>
 		<module>quartz</module>
+		<module>zkconfig</module>
 	</modules>
 
 	<build>
