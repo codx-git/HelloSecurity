@@ -13,8 +13,7 @@ public class JobUtils {
         try{
             if(job.getBeanClass() != null && job.getMethodName() != null){
                 Class clazz = Class.forName(job.getBeanClass());
-                //clazz.newInstance()被启用
-                //Constructor.newInstance() 方法可以更灵活地创建类的实例，它可以调用类的任意构造函数，并且能更准确地处理异常
+                //clazz.newInstance()被启用]确地处理异常
                 Method method = clazz.getMethod(job.getMethodName());
                 method.invoke(clazz.getConstructor().newInstance());
                 //激活带JobExecutionContext的入参的接口

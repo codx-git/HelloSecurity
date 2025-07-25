@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //mybatis-plus mapper scan
 //@MapperScan("example.hello_security.mapper")
 //springboot组件扫描，当多模块时如果项目启动类的文件路径和其他模块的路径不一致是需要使用ComponentScan；否则会扫描不到
-//不使用componentsacn了，直接改文件名
+//不使用@Componentscan了，直接改文件名
 //@ComponentScan(basePackages ={"com.example.quartz.*","example.hello_security.*"})
 public class HelloSecurityApplication {
 

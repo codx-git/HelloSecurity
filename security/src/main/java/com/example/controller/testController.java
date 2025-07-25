@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.management.ManagementFactory;
@@ -21,14 +22,16 @@ import java.util.Map;
 @RequestMapping("/test")
 @Tag(name="testController", description = "测试控制器，学习openapi基础功能")
 public class testController {
-    @Value("${nickname1:test1}")
+    @Value("${url:test1}")
     String v1;
-    @Value("${nickname2:test2}")
+    @Value("${username:test2}")
     String v2;
-    @Value("${nickname3:test3}")
+    @Value("${password:test3}")
     String v3;
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private Environment environment;
     @Autowired
     SysRoleRequestMapper sysRoleRequestMapper;
     @Autowired
@@ -59,6 +62,7 @@ public class testController {
     }
     @GetMapping("getZk")
     public String getZk(){
+        environment.getProperty("server.port");
        return "nickname1"+v1+";nickname2"+v2+";nickname3"+v3;
     }
 }

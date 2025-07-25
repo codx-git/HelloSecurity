@@ -4,8 +4,8 @@ import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
-import org.apache.zookeeper.common.ZKConfig;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.PropertySource;
@@ -19,7 +19,8 @@ public class ZookeeperConfig {
     @Value("${zookeeper.namespace:}")
     private String namespace;
 
-//    @Bean(destroyMethod = "close")
+    @Bean(destroyMethod = "close")
+    @ConditionalOnProperty(name = "zookeeper.enable", havingValue = "true", matchIfMissing = false)
     public CuratorFramework curatorFramework(){
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
         CuratorFramework client = CuratorFrameworkFactory.newClient(
@@ -34,7 +35,8 @@ public class ZookeeperConfig {
         return client;
     }
     @Bean
-    public PropertySource<CuratorFramework> zkConfigPropertySource(CuratorFramework curatorFramework, @Value("${spring.application.name}") String serviceName ){
+    @ConditionalOnProperty(name = "zookeeper.enable", havingValue = "true", matchIfMissing = false)
+    public PropertySource<CuratorFramework> zkConfigPropertySource(CuratorFramework curatorFramework, @Value("${spring.application.name}") String serviceName ) throws Exception {
         String path = "/config/" + serviceName;
         return new ZKConfigPropertySource(path,curatorFramework);
     }

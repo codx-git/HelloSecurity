@@ -26,17 +26,26 @@ public class LogTraceIdFilter extends OncePerRequestFilter {
             traceId = UUID.randomUUID().toString();
         }
         MDC.put(MDC_TRACE_ID_KEY,traceId);
-        log.info("request_url:" + request.getRequestURI() + ";request_method:" + request.getMethod()
-                + ";request_body:" + (request.getParameterMap().isEmpty() ? "{}" : JSON.toJSONString(request.getParameterMap())));
+        log.info("request_url:{};request_method:{};request_body:{}"
+                ,request.getRequestURI(),request.getMethod(),
+                (request.getParameterMap().isEmpty() ? "{}" : JSON.toJSONString(request.getParameterMap())));
         try{
             filterChain.doFilter(request,response);
         }finally {
             //log.info("running log end");
             //返回的结果带上trace_id
             long costTime = System.currentTimeMillis() - costStart;
-            log.info("code:" + response.getStatus() + ";cost_time:" + costTime + "ms;response_body" + response.getOutputStream().toString());
+            String body = "";
+            if(response.getContentType() != null && response.getContentType().startsWith("application/json")){
+                body = JSON.toJSONString(response.getOutputStream().toString());
+            }else {
+                body = "[BINARY_DATA]";
+            }
+            log.info("response_status:{};cost_time:{}ms;response_body:{}"
+                    ,response.getStatus(),costTime, body);
             response.setHeader(TRACE_ID_HEADER,traceId);
             MDC.remove(MDC_TRACE_ID_KEY);
         }
     }
+
 }
